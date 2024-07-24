@@ -111,6 +111,7 @@ func NewConfManager(homePath string) *ConfManager {
 				os.Exit(1)
 			}
 			os.Chmod(path.Join(homePath, "./.sshx_config.json"), 0777)
+			os.Exit(1)
 		} else {
 			logrus.Error(err)
 			os.Exit(1)
