@@ -16,7 +16,7 @@ func cmdSSHFS(cmd *cli.Cmd) {
 
 func cmdUnmount(cmd *cli.Cmd) {
 	cmd.Spec = "PID"
-	pidOpt := cmd.StringArg("PID", "", "vnc server pair Id")
+	pidOpt := cmd.StringArg("PID", "", "ssh server pair Id")
 	cmd.Action = func() {
 		if pidOpt == nil || *pidOpt == "" {
 			return

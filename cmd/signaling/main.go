@@ -10,7 +10,7 @@ import (
 func main() {
 	port := os.Getenv("SSHX_SIGNALING_PORT")
 	if port == "" {
-		port = "11095"
+		port = "5003"
 	}
 
 	server := NewServer(port)

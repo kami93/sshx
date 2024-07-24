@@ -47,8 +47,6 @@ var registeddApp = []Impl{
 	&Proxy{},
 	&SSHFS{},
 	&SCP{},
-	&VNCService{},
-	&VNC{},
 	&STAT{},
 	&Messager{},
 	&Transfer{},

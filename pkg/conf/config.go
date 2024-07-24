@@ -15,7 +15,6 @@ import (
 	"github.com/pion/webrtc/v3"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github.com/suutaku/go-vnc/pkg/config"
 	"github.com/suutaku/sshx/internal/utils"
 )
 
@@ -26,8 +25,6 @@ type Configure struct {
 	ID                  string
 	SignalingServerAddr string
 	RTCConf             webrtc.Configuration
-	VNCConf             config.Configure
-	VNCStaticPath       string
 	ETHAddr             string
 }
 
@@ -42,7 +39,7 @@ var defaultConfig = Configure{
 	LocalSSHPort:        22,
 	LocalTCPPort:        2224,
 	ID:                  uuid.New().String(),
-	SignalingServerAddr: "http://140.179.153.231:11095",
+	SignalingServerAddr: "http://alindev.kaist.ac.kr:5003",
 	RTCConf: webrtc.Configuration{
 		ICEServers: []webrtc.ICEServer{
 			{
@@ -56,7 +53,6 @@ var defaultConfig = Configure{
 			},
 		},
 	},
-	VNCConf: config.DefaultConfigure,
 }
 
 func ClearKnownHosts(subStr string) {
@@ -107,7 +103,6 @@ func NewConfManager(homePath string) *ConfManager {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			// Config file not found; ignore error if desired
 			defaultConfig.RTCConf.PeerIdentity = utils.HashString(fmt.Sprintf("%s%d", defaultConfig.ID, time.Now().Unix()))
-			defaultConfig.VNCStaticPath = path.Join(homePath, "noVNC")
 			bs, _ := json.MarshalIndent(defaultConfig, "", "  ")
 			vp.ReadConfig(bytes.NewBuffer(bs))
 			err = vp.WriteConfigAs(path.Join(homePath, "./.sshx_config.json"))

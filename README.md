@@ -194,10 +194,6 @@ Commands:
 Run 'sshx proxy COMMAND --help' for more information on a command.
 ```
 
-VNC
-
-sshx contained a `noVNC` client which write with Javascript. To use client just access `http://vnc.sshx.wz` (not working with VPN environment) or `http://127.0.0.1` and input device ID in setting menu.
-
 Copy ID
 
 ```bash
@@ -275,10 +271,8 @@ Features
 - [x] Custom signaling server
 - [x] Multiple connection with one remote device
 - [x] A simple signaling server implementation
-- [ ] Pure go (due the `github.com/go-vgo/robotgo`)
 - [x] Lunux system service supporting
 - [x] VS Code SSH remote suportting (use proxy way due the VS Code not an open source project)
-- [x] VNC supporting (both vnc server and client)
 - [x] Ssh-fs supporting
 
 
