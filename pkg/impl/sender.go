@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/suutaku/sshx/pkg/conf"
-	"github.com/suutaku/sshx/pkg/types"
+	// "github.com/suutaku/sshx/pkg/types"
 )
 
 // Request struct which send to Local TCP listenner
@@ -22,23 +22,37 @@ type Sender struct {
 	ProxyHostPort int32 // Host port for proxy app.       
 }
 
+func NewProxySender(imp *Proxy, optCode int32) *Sender {
+	if imp.HostId() == "" {
+		logrus.Warn("Host Id not set, maybe you should set it on Preper")
+	}
+
+	ret := &Sender{
+		Type: (imp.Code() << flagLen) | optCode,
+		ProxyHostPort: (imp.Hostport() << flagLen) | optCode,
+	}
+
+	buf := bytes.Buffer{}
+	err := gob.NewEncoder(&buf).Encode(imp)
+	if err != nil {
+		logrus.Error(err)
+		return nil
+	}
+	ret.Payload = buf.Bytes()
+	cm := conf.NewConfManager("")
+	ret.LocalEntry = fmt.Sprintf("127.0.0.1:%d", cm.Conf.LocalTCPPort)
+	ret.PairId = []byte(imp.PairId())
+	return ret
+}
+
 func NewSender(imp Impl, optCode int32) *Sender {
 	if imp.HostId() == "" {
 		logrus.Warn("Host Id not set, maybe you should set it on Preper")
 	}
 
-	if types.APP_TYPE_PROXY == imp.Code() {
-		ret := &Sender{
-			Type: (imp.Code() << flagLen) | optCode,
-			ProxyHostPort: (imp.Hostport() << flagLen) | optCode,
-		}
+	ret := &Sender{
+		Type: (imp.Code() << flagLen) | optCode,
 	}
-	else {
-		ret := &Sender{
-			Type: (imp.Code() << flagLen) | optCode,
-		}
-	}
-
 
 	buf := bytes.Buffer{}
 	err := gob.NewEncoder(&buf).Encode(imp)
@@ -63,15 +77,15 @@ func (sender *Sender) GetOptionCode() int32 {
 
 func (sender *Sender) GetImpl() Impl {
 
-	appcode = sender.GetAppCode()
-
+	appcode := sender.GetAppCode()
 	impl := GetImpl(appcode)
-	if appcode == types.APP_TYPE_PROXY {
-		hostport = sender.ProxyHostPort >> flagLen
-		logrus.Warn("Setting host port for proxy ", hostport)
 
-		impl.SetHostport(hostport)
-	}
+	// if appcode == types.APP_TYPE_PROXY {
+	// 	hostport := sender.ProxyHostPort >> flagLen
+	// 	logrus.Warn("Setting host port for proxy ", hostport)
+
+	// 	impl.ProxyHostPort = hostport
+	// }
 
 	buf := bytes.NewBuffer(sender.Payload)
 	err := gob.NewDecoder(buf).Decode(impl)

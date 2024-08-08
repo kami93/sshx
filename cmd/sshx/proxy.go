@@ -45,7 +45,7 @@ func cmdStartProxy(cmd *cli.Cmd) {
 
 		fmt.Println("pass 1")
 
-		sender := impl.NewSender(proxy, types.OPTION_TYPE_UP)
+		sender := impl.NewProxySender(proxy, types.OPTION_TYPE_UP)
 
 		fmt.Println("pass 2")
 

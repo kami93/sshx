@@ -38,10 +38,6 @@ func (p *Proxy) Hostport() int32 {
 	return p.ProxyHostPort
 }
 
-func (p *Proxy) SetHostport(port int32) {
-	p.ProxyHostPort = port
-}
-
 func (p *Proxy) Start(conn net.Conn) error {
 	conf.ClearKnownHosts(fmt.Sprintf("127.0.0.1:%d", p.ProxyPort))
 	p.Running = true
