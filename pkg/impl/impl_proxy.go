@@ -41,7 +41,7 @@ func (p *Proxy) Start(conn net.Conn) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Proxy for ", p.ProxyHostId, " at :", p.ProxyPort)
+	fmt.Println("Proxy for ", p.ProxyHostId, ':', p.ProxyHostPort, " at the local port:", p.ProxyPort)
 
 	for p.Running {
 		inconn, err := listenner.Accept()
@@ -66,7 +66,7 @@ func (s *Proxy) Response() error {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	
-	logrus.Debug("Dial local addr ", s.ProxyHostPort)
+	logrus.Debug("Dial the port for proxy ", s.ProxyHostPort)
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", s.ProxyHostPort))
 	if err != nil {
 		return err
