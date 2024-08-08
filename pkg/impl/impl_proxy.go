@@ -20,6 +20,10 @@ type Proxy struct {
 
 func NewProxy(port int32, host string, hostport int32) *Proxy {
 	return &Proxy{
+		BaseImpl:    BaseImpl{
+			HId:        host,
+			ConnectNow: true,
+		},
 		ProxyPort:   port,
 		ProxyHostId: host,
 		ProxyHostPort: hostport,
