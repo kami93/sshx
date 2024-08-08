@@ -23,28 +23,36 @@ func cmdStopProxy(cmd *cli.Cmd) {
 
 func cmdStartProxy(cmd *cli.Cmd) {
 	// cmd.Spec = "-P [-d] ADDR"
-	cmd.Spec = "-P ADDR"
-	proxyPort := cmd.IntOpt("P", 0, "local proxy port")
-	// detach := cmd.BoolOpt("d", false, "detach process")
+	cmd.Spec = "-L -R ADDR"
+	localPort := cmd.IntOpt("L", 0, "local proxy port")
+	remotePort := cmd.IntOpt("R", 0,    "remote proxy port")
+
 	addr := cmd.StringArg("ADDR", "", "remote target address [username]@[host]:[port]")
 	cmd.Action = func() {
-		if proxyPort == nil || *proxyPort == 0 {
-			fmt.Println("please set a proxy port")
+		if localPort == nil || *localPort == 0 {
+			fmt.Println("please set a local port")
+		}
+		if remotePort == nil || *remotePort == 0 {
+			fmt.Println("please set a remote port")
 		}
 		if addr == nil || *addr == "" {
 			fmt.Println("please set a remote device")
 		}
 
-		proxy := impl.NewProxy(int32(*proxyPort), *addr)
+		proxy := impl.NewProxy(int32(*localPort), *addr, int32(*remotePort))
 		proxy.Preper()
 		proxy.NoNeedConnect()
 
 		sender := impl.NewSender(proxy, types.OPTION_TYPE_UP)
-		_, err := sender.SendDetach()
+
+		// _, err := sender.SendDetach()
+		conn, err := sender.Send()
+		
 		if err != nil {
 			logrus.Error(err)
 		}
-		err = proxy.Start()
+		err = proxy.Start(&conn)
+		
 		if err != nil {
 			logrus.Error(err)
 		}
