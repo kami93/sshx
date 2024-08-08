@@ -41,7 +41,7 @@ func cmdStartProxy(cmd *cli.Cmd) {
 
 		proxy := impl.NewProxy(int32(*localPort), *addr, int32(*remotePort))
 		proxy.Preper()
-		proxy.NoNeedConnect()
+		// proxy.NoNeedConnect()
 
 		fmt.Println("pass 1")
 
