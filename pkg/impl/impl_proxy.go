@@ -22,7 +22,7 @@ func NewProxy(port int32, host string, hostport int32) *Proxy {
 	return &Proxy{
 		ProxyPort:   port,
 		ProxyHostId: host,
-		ProxyHostPort: hostport
+		ProxyHostPort: hostport,
 	}
 }
 
@@ -30,7 +30,7 @@ func (p *Proxy) Code() int32 {
 	return types.APP_TYPE_PROXY
 }
 
-func (p *Proxy) Start(conn *net.Conn) error {
+func (p *Proxy) Start(conn net.Conn) error {
 	conf.ClearKnownHosts(fmt.Sprintf("127.0.0.1:%d", p.ProxyPort))
 	p.Running = true
 	listenner, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", p.ProxyPort))
