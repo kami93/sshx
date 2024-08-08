@@ -34,6 +34,14 @@ func (p *Proxy) Code() int32 {
 	return types.APP_TYPE_PROXY
 }
 
+func (p *Proxy) Hostport() int32 {
+	return p.ProxyHostPort
+}
+
+func (p *Proxy) SetHostport(port int32) {
+	p.ProxyHostPort = port
+}
+
 func (p *Proxy) Start(conn net.Conn) error {
 	conf.ClearKnownHosts(fmt.Sprintf("127.0.0.1:%d", p.ProxyPort))
 	p.Running = true
@@ -62,16 +70,16 @@ func (p *Proxy) Close() {
 	logrus.Debug("close proxy impl")
 }
 
-func (s *Proxy) Response() error {
-	s.lock.Lock()
-	defer s.lock.Unlock()
+func (p *Proxy) Response() error {
+	p.lock.Lock()
+	defer p.lock.Unlock()
 	
-	logrus.Debug("Dial the port for proxy ", s.ProxyHostPort)
-	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", s.ProxyHostPort))
+	logrus.Debug("Dial the port for proxy ", p.ProxyHostPort)
+	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", p.ProxyHostPort))
 	if err != nil {
 		return err
 	}
-	s.BaseImpl.conn = &conn
+	p.BaseImpl.conn = &conn
 	return nil
 }
 

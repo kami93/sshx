@@ -8,6 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/suutaku/sshx/pkg/conf"
+	"github.com/suutaku/sshx/pkg/types"
 )
 
 // Request struct which send to Local TCP listenner
@@ -18,15 +19,27 @@ type Sender struct {
 	LocalEntry string
 	Payload    []byte // Application specify payload
 	Status     int32
+	ProxyHostPort int32 // Host port for proxy app.       
 }
 
 func NewSender(imp Impl, optCode int32) *Sender {
 	if imp.HostId() == "" {
 		logrus.Warn("Host Id not set, maybe you should set it on Preper")
 	}
-	ret := &Sender{
-		Type: (imp.Code() << flagLen) | optCode,
+
+	if types.APP_TYPE_PROXY == imp.Code() {
+		ret := &Sender{
+			Type: (imp.Code() << flagLen) | optCode,
+			ProxyHostPort: (imp.Hostport() << flagLen) | optCode,
+		}
 	}
+	else {
+		ret := &Sender{
+			Type: (imp.Code() << flagLen) | optCode,
+		}
+	}
+
+
 	buf := bytes.Buffer{}
 	err := gob.NewEncoder(&buf).Encode(imp)
 	if err != nil {
@@ -49,7 +62,17 @@ func (sender *Sender) GetOptionCode() int32 {
 }
 
 func (sender *Sender) GetImpl() Impl {
-	impl := GetImpl(sender.GetAppCode())
+
+	appcode = sender.GetAppCode()
+
+	impl := GetImpl(appcode)
+	if appcode == types.APP_TYPE_PROXY {
+		hostport = sender.ProxyHostPort >> flagLen
+		logrus.Warn("Setting host port for proxy ", hostport)
+
+		impl.SetHostport(hostport)
+	}
+
 	buf := bytes.NewBuffer(sender.Payload)
 	err := gob.NewDecoder(buf).Decode(impl)
 	if err != nil {
