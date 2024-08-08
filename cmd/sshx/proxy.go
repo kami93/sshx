@@ -43,16 +43,24 @@ func cmdStartProxy(cmd *cli.Cmd) {
 		proxy.Preper()
 		proxy.NoNeedConnect()
 
+		fmt.Println("pass 1")
+
 		sender := impl.NewSender(proxy, types.OPTION_TYPE_UP)
+
+		fmt.Println("pass 2")
 
 		// _, err := sender.SendDetach()
 		conn, err := sender.Send()
 		
+		fmt.Println("pass 3")
+
 		if err != nil {
 			logrus.Error(err)
 		}
 		err = proxy.Start(conn)
 		
+		fmt.Println("pass 4")
+
 		if err != nil {
 			logrus.Error(err)
 		}

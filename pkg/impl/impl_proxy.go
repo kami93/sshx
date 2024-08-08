@@ -41,7 +41,7 @@ func (p *Proxy) Start(conn net.Conn) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Proxy for ", p.ProxyHostId, ':', p.ProxyHostPort, " at the local port:", p.ProxyPort)
+	fmt.Println("Proxy for ", p.ProxyHostId, "remote port:", p.ProxyHostPort, ", to the local port:", p.ProxyPort)
 
 	for p.Running {
 		inconn, err := listenner.Accept()
