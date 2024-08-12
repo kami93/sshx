@@ -72,6 +72,8 @@ func (p *Proxy) Close() {
 }
 
 func (p *Proxy) Response() error {
+	logrus.Warn("proxy impl response")
+
 	p.lock.Lock()
 	defer p.lock.Unlock()
 	
