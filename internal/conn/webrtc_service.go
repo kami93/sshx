@@ -134,6 +134,7 @@ func (wss *WebRTCService) push(info types.SignalingInfo) error {
 	if !wss.isValidSignalingInfo(info) {
 		return fmt.Errorf("invalid SignalingInfo")
 	}
+	logrus.Warn("push port ", info.ProxyHostPort)
 	wss.sigPush <- info
 	return nil
 }
