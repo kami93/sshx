@@ -55,7 +55,7 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 	}
 
 	if iface.Code() == types.APP_TYPE_PROXY {
-		logrus.Warn(fmt.Sprintf("sender hostport%d", sender.ProxyHostPort))
+		logrus.Warn(fmt.Sprintf("sender hostport: %d", sender.ProxyHostPort))
 		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
 	}
 
@@ -150,6 +150,12 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 		return
 	}
 	iface.SetHostId(info.Source)
+
+	if iface.Code() == types.APP_TYPE_PROXY {
+		logrus.Warn(fmt.Sprintf("sender hostport: %d", cvt.ProxyHostPort))
+		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
+	}
+
 	// set candidate pool id direction to out for self(server)
 	pair := NewWebRTC(wss.conf, iface, wss.id, info.Source, info.Id, CONNECTION_DRECT_IN, &wss.CleanChan)
 	// set candidate pool id direction to out for client
