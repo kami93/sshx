@@ -245,7 +245,7 @@ func (trs *TransferService) Start() error {
 }
 
 func (trs *TransferService) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (trs *TransferService) SetHostport(port int32) error {

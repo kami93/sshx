@@ -33,7 +33,7 @@ func NewSCP(src, dest, ident string) *SCP {
 }
 
 func (s *SCP) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (s *SCP) SetHostport(port int32) error {

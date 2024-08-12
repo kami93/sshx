@@ -25,7 +25,7 @@ func NewSTAT() *STAT {
 }
 
 func (stat *STAT) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (stat *STAT) SetHostport(port int32) error {

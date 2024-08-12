@@ -36,7 +36,7 @@ func NewMessager(hostId string) *Messager {
 }
 
 func (m *Messager) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (m *Messager) SetHostport(port int32) error {

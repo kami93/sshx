@@ -49,7 +49,7 @@ func NewSSH(address string, x11 bool, ident string, copyId bool) *SSH {
 }
 
 func (s *SSH) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (s *SSH) SetHostport(port int32) error {

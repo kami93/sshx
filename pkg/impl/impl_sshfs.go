@@ -31,7 +31,7 @@ func NewSSHFS(mountPoint, root, address, id string) *SSHFS {
 }
 
 func (s *SSHFS) Hostport() int32 {
-	return 0
+	return 999
 }
 
 func (fs *SSHFS) SetHostport(port int32) error {
