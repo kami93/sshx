@@ -54,11 +54,6 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 		iface.SetConn(sock)
 	}
 
-	if iface.Code() == types.APP_TYPE_PROXY {
-		logrus.Warn(fmt.Sprintf("sender hostport: %d", sender.ProxyHostPort))
-		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
-	}
-
 	pair := NewWebRTC(wss.conf, iface, wss.id, iface.HostId(), poolId, CONNECTION_DRECT_OUT, &wss.CleanChan)
 	if pair == nil {
 		return fmt.Errorf("cannot create pair")
@@ -71,9 +66,11 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 	if iface.IsNeedConnect() {
 		logrus.Warn("create connection for ", impl.GetImplName(iface.Code()))
 		info, err := pair.Offer(string(iface.HostId()), sender.Type)
-		info.ProxyHostPort = sender.ProxyHostPort
 
-		logrus.Warn(fmt.Sprintf("webrtc info hostport: %d", info.ProxyHostPort))
+		if iface.Code() == types.APP_TYPE_PROXY {
+			info.ProxyHostPort = iface.Hostport()
+		}
+		logrus.Warn(fmt.Sprintf("webrtc sender info hostport: %d", info.ProxyHostPort))
 
 
 		if err != nil {
@@ -148,7 +145,6 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	}
 	cvt := impl.Sender{
 		Type: info.RemoteRequestType,
-		ProxyHostPort: info.ProxyHostPort,
 	}
 	iface := impl.GetImpl(cvt.GetAppCode())
 	if iface == nil {
@@ -158,9 +154,8 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	iface.SetHostId(info.Source)
 
 	if iface.Code() == types.APP_TYPE_PROXY {
+		logrus.Warn(fmt.Sprintf("info receiving hostport: %d", info.ProxyHostPort))
 		iface.SetHostport(info.ProxyHostPort)
-		
-		logrus.Warn(fmt.Sprintf("sender hostport: %d", cvt.ProxyHostPort))
 		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
 	}
 
