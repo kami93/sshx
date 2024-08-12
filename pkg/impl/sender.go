@@ -81,7 +81,8 @@ func (sender *Sender) GetImpl() Impl {
 	impl := GetImpl(appcode)
 
 	if appcode == types.APP_TYPE_PROXY {
-		hostport := sender.ProxyHostPort >> flagLen
+		// hostport := (sender.ProxyHostPort >> flagLen)
+		hostport := 22
 		impl.SetHostport(hostport)
 		logrus.Warn("Setting host port for proxy ", hostport)
 	}
