@@ -103,14 +103,14 @@ func (sender *Sender) Send() (net.Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	logrus.Debug("waiting TCP Responnse")
+	logrus.Warn("waiting TCP Responnse")
 
 	err = gob.NewDecoder(conn).Decode(sender)
 	if err != nil {
 		return nil, err
 	}
 
-	logrus.Debug("TCP Responnse OK ", string(sender.PairId))
+	logrus.Warn("TCP Responnse OK ", string(sender.PairId))
 	if sender.Status != 0 {
 		return nil, fmt.Errorf("response error")
 	}

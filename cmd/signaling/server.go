@@ -39,7 +39,7 @@ func (sv *Server) pull() http.Handler {
 		vars := mux.Vars(r)
 		select {
 		case v := <-sv.dm.Get(vars["self_id"]):
-			logrus.Debug("pull from ", vars["self_id"], v.Flag)
+			logrus.Warn("pull from ", vars["self_id"], v.Flag)
 			w.Header().Add("Content-Type", "application/binary")
 			if err := gob.NewEncoder(w).Encode(v); err != nil {
 				logrus.Error("binary encode failed:", err)
@@ -60,6 +60,6 @@ func (sv *Server) push() http.Handler {
 		}
 		vars := mux.Vars(r)
 		sv.dm.Set(vars["target_id"], info)
-		logrus.Debug("push from ", info.Source, " to ", vars["target_id"], info.Flag)
+		logrus.Warn("push from ", info.Source, " to ", vars["target_id"], info.Flag)
 	})
 }

@@ -134,7 +134,7 @@ func (tr *Transfer) doResponse(s net.Conn) error {
 	}
 	switch info.OptionType {
 	case TYPE_DOWNLOAD:
-		logrus.Debug("response download")
+		logrus.Warn("response download")
 		file, err := os.Open(tr.FilePath)
 		if err != nil {
 			logrus.Error(err)
@@ -149,13 +149,13 @@ func (tr *Transfer) doResponse(s net.Conn) error {
 		s.Close()
 		return err
 	case TYPE_UPLOAD:
-		logrus.Debug("response upload")
+		logrus.Warn("response upload")
 		file, err := os.Create(filepath.Join(os.Getenv("HOME"), "Downloads", info.Name))
 		if err != nil {
 			logrus.Error(err)
 			return err
 		}
-		logrus.Debug("file created")
+		logrus.Warn("file created")
 		defer file.Close()
 		bar := progressbar.DefaultBytes(
 			info.Size,
@@ -202,7 +202,7 @@ func (tr *Transfer) DoUpload(reader io.Reader) error {
 		}
 		defer file.Close()
 		n, err := io.Copy(io.MultiWriter(tr.Conn(), bar), file)
-		logrus.Debug("stop process upload ", err, n)
+		logrus.Warn("stop process upload ", err, n)
 		// time.Sleep(5 * time.Second)
 		return err
 	} else {

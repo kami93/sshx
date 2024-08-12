@@ -50,13 +50,13 @@ func (base *BaseConnectionService) Id() string {
 }
 
 func (base *BaseConnectionService) ResponseTCP(sender *impl.Sender, conn net.Conn) error {
-	logrus.Debug("do Response TCP")
+	logrus.Warn("do Response TCP")
 	err := gob.NewEncoder(conn).Encode(sender)
 	if err != nil {
 		logrus.Error(err)
 		return err
 	}
-	logrus.Debug("did Response TCP")
+	logrus.Warn("did Response TCP")
 	return nil
 }
 
@@ -75,7 +75,7 @@ func (base *BaseConnectionService) WatchPairs() {
 	for base.running {
 		pairId := <-base.CleanChan
 		base.RemovePair(pairId)
-		logrus.Debug("clean request from clean channel ", pairId)
+		logrus.Warn("clean request from clean channel ", pairId)
 	}
 }
 

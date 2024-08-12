@@ -55,14 +55,14 @@ func (dm *DManager) Set(id string, info types.SignalingInfo) {
 		dm.mu.Unlock()
 		dm.resetAlive(id)
 		go func(dmc *DManager) {
-			logrus.Debug("create watch dog for ", id)
+			logrus.Warn("create watch dog for ", id)
 			for dmc.alive[id] > 0 {
 				time.Sleep(time.Second)
 				dmc.mu.Lock()
 				dmc.alive[id]--
 				dmc.mu.Unlock()
 			}
-			logrus.Debug("execute watch dog for ", id)
+			logrus.Warn("execute watch dog for ", id)
 			dm.Clean(id)
 		}(dm)
 	}

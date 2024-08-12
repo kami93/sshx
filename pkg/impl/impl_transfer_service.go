@@ -55,7 +55,7 @@ func (trs *TransferService) Start() error {
 	signal.Notify(c, os.Interrupt)
 	go func() {
 		<-c
-		logrus.Debug("ctr+c ", trs.PairId())
+		logrus.Warn("ctr+c ", trs.PairId())
 		sender := NewSender(trs, types.OPTION_TYPE_DOWN)
 		sender.PairId = []byte(trs.PairId())
 		sender.SendDetach()
@@ -63,7 +63,7 @@ func (trs *TransferService) Start() error {
 	}()
 
 	if !trs.ShowQR {
-		logrus.Debug("not shown qr code")
+		logrus.Warn("not shown qr code")
 		if trs.Upload { // upload case
 			transfer := NewTransfer(trs.HostId(), trs.FilePath, true, nil)
 			if transfer == nil {
@@ -117,7 +117,7 @@ func (trs *TransferService) Start() error {
 		entryType = TYPE_UPLOAD
 	}
 	trs.ServerAddr = fmt.Sprintf("http://%s:%d/%s", utils.GetLocalIP(), trs.ServerPort, entryUrl)
-	logrus.Debug(trs.ServerAddr)
+	logrus.Warn(trs.ServerAddr)
 
 	r.HandleFunc("/"+upUrlEntry, func(w http.ResponseWriter, r *http.Request) {
 		// 	page := `<html>
@@ -145,7 +145,7 @@ func (trs *TransferService) Start() error {
 
 		finfo, err := os.Stat(tmpFilePath)
 		if os.IsNotExist(err) {
-			logrus.Debug("tmp file ", tmpFilePath, " not exist")
+			logrus.Warn("tmp file ", tmpFilePath, " not exist")
 			tf, err := os.Create(tmpFilePath)
 			if err != nil {
 				w.Write([]byte(err.Error()))
@@ -179,7 +179,7 @@ func (trs *TransferService) Start() error {
 			}
 
 		} else {
-			logrus.Debug("tmp file ", tmpFilePath, " already exist")
+			logrus.Warn("tmp file ", tmpFilePath, " already exist")
 			tf, err := os.Open(tmpFilePath)
 			if err != nil {
 				w.Write([]byte(err.Error()))
@@ -193,10 +193,10 @@ func (trs *TransferService) Start() error {
 			mw := io.MultiWriter(w, bar)
 			io.Copy(mw, tf)
 		}
-		logrus.Debug("end of gorutine ", err)
+		logrus.Warn("end of gorutine ", err)
 	})
 	r.HandleFunc("/"+upUrl, func(w http.ResponseWriter, r *http.Request) {
-		logrus.Debug("new update request come")
+		logrus.Warn("new update request come")
 		file, header, err := r.FormFile("xcontent")
 		if err != nil {
 			w.Write([]byte(err.Error()))
@@ -228,7 +228,7 @@ func (trs *TransferService) Start() error {
 
 		msg := fmt.Sprintf("upload %s (%d) success!", header.Filename, header.Size)
 		w.Write([]byte(msg))
-		logrus.Debug("end of gorutine")
+		logrus.Warn("end of gorutine")
 	})
 	trs.server = &http.Server{Addr: fmt.Sprintf(":%d", trs.ServerPort), Handler: r}
 	if entryType == TYPE_DOWNLOAD {

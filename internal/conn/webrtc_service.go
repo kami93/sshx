@@ -34,7 +34,7 @@ func NewWebRTCService(id, signalingServerAddr string, conf webrtc.Configuration)
 }
 
 func (wss *WebRTCService) Start() error {
-	logrus.Debug("start webrtc service")
+	logrus.Warn("start webrtc service")
 	wss.BaseConnectionService.Start()
 	go wss.ServeSignaling()
 
@@ -64,7 +64,7 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 		return err
 	}
 	if iface.IsNeedConnect() {
-		logrus.Debug("create connection for ", impl.GetImplName(iface.Code()))
+		logrus.Warn("create connection for ", impl.GetImplName(iface.Code()))
 		info, err := pair.Offer(string(iface.HostId()), sender.Type)
 		if err != nil {
 			return err
@@ -160,7 +160,7 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	}
 
 	pair.PeerConnection.OnICECandidate(func(c *webrtc.ICECandidate) {
-		logrus.Debug("send candidate")
+		logrus.Warn("send candidate")
 		// set candidate pool id direction to out for client
 		info.Id.Direction = pair.Direction()
 		wss.SignalCandidate(info, info.Source, c)
@@ -189,7 +189,7 @@ func (wss *WebRTCService) ServePush(info types.SignalingInfo) {
 		logrus.Errorln("push to ", info.Target, "faild")
 		return
 	}
-	logrus.Debug(wss.signalingServerAddr +
+	logrus.Warn(wss.signalingServerAddr +
 		path.Join("/", "push", info.Target))
 }
 

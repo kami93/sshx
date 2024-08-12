@@ -28,7 +28,7 @@ func NewConnectionManager(enabledService []ConnectionService) *ConnectionManager
 }
 
 func (cm *ConnectionManager) Start() {
-	logrus.Debug("Start connection manager")
+	logrus.Warn("Start connection manager")
 	for _, v := range cm.css {
 		v.SetStateManager(cm.stm)
 		v.Start()
@@ -38,7 +38,7 @@ func (cm *ConnectionManager) Start() {
 		} else {
 			typeName = t.Name()
 		}
-		logrus.Debug("Start ", typeName)
+		logrus.Warn("Start ", typeName)
 	}
 }
 
@@ -130,13 +130,13 @@ func (cm *ConnectionManager) Status(sender impl.Sender, conn net.Conn) error {
 		return err
 	}
 	res = cm.stm.Stat()
-	logrus.Debug("responsed ----->", res)
+	logrus.Warn("responsed ----->", res)
 	err = gob.NewEncoder(conn).Encode(res)
 	if err != nil {
 		logrus.Error(err)
 		return err
 	}
-	logrus.Debug("responsed <-----")
+	logrus.Warn("responsed <-----")
 	return nil
 }
 
@@ -185,7 +185,7 @@ func (stm *StatManager) putStat(stat types.Status) {
 		return
 	}
 	stm.stats[stat.PairId] = stat
-	logrus.Debug("put status ", stat.PairId)
+	logrus.Warn("put status ", stat.PairId)
 }
 
 func (stm *StatManager) getStat() []types.Status {
@@ -199,7 +199,7 @@ func (stm *StatManager) getStat() []types.Status {
 
 func (stm *StatManager) removeStat(pid string) {
 	delete(stm.stats, pid)
-	logrus.Debug("remove status for ", pid)
+	logrus.Warn("remove status for ", pid)
 }
 
 func PoolIdFromInt(id int64) string {
@@ -214,7 +214,7 @@ func (stm *StatManager) RemovePair(id CleanRequest) {
 	stm.lock.Lock()
 	defer stm.lock.Unlock()
 	children := stm.getChildren(id.Key)
-	logrus.Debug("ready to clear children ", children)
+	logrus.Warn("ready to clear children ", children)
 	// close children
 	for _, v := range children {
 		if stm.cpPool[v] != nil && stm.cpPool[v].Name() == id.ConnectionName {
@@ -235,7 +235,7 @@ func (stm *StatManager) RemovePair(id CleanRequest) {
 
 func (stm *StatManager) doAddPair(pair Connection) error {
 	stm.cpPool[pair.PoolId().String(pair.Direction())] = pair
-	logrus.Debugf("add pair %s %s successfully\n", pair.PoolId().String(pair.Direction()), pair.Name())
+	logrus.Warnf("add pair %s %s successfully\n", pair.PoolId().String(pair.Direction()), pair.Name())
 	stat := types.Status{
 		PairId:    pair.PoolId().String(pair.Direction()),
 		TargetId:  pair.TargetId(),
@@ -273,7 +273,7 @@ func (stm *StatManager) AddPair(pair Connection) error {
 			return stm.doAddPair(pair)
 		}
 		for !oldPair.IsReady() && !pair.IsReady() {
-			logrus.Debug("watting %s\n", pair.Name())
+			logrus.Warn("watting %s\n", pair.Name())
 			time.Sleep(500 * time.Millisecond)
 		}
 		if oldPair.IsReady() {

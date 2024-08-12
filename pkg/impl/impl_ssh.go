@@ -79,7 +79,7 @@ func (s *SSH) Response() error {
 	defer s.lock.Unlock()
 	cm := conf.NewConfManager("")
 
-	logrus.Debug("Dail local addr ", cm.Conf.LocalSSHPort)
+	logrus.Warn("Dail local addr ", cm.Conf.LocalSSHPort)
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", cm.Conf.LocalSSHPort))
 	if err != nil {
 		return err
@@ -127,23 +127,23 @@ func (s *SSH) decodeAddress() error {
 
 // dial remote sshd with opened wrtc connection
 func (s *SSH) OpenTerminal(conn net.Conn) error {
-	logrus.Debug("dialRemoteAndOpenTerminal")
+	logrus.Warn("dialRemoteAndOpenTerminal")
 	s.config.Auth = append(s.config.Auth, ssh.RetryableAuthMethod(ssh.PasswordCallback(s.passwordCallback), NumberOfPrompts))
 	c, chans, reqs, err := ssh.NewClientConn(conn, "", &s.config)
 	if err != nil {
 		return err
 	}
-	logrus.Debug("conn ok")
+	logrus.Warn("conn ok")
 	client := ssh.NewClient(c, chans, reqs)
 	if client == nil {
 		return fmt.Errorf("cannot create ssh client")
 	}
-	logrus.Debug("client ok")
+	logrus.Warn("client ok")
 	session, err := client.NewSession()
 	if err != nil {
 		return err
 	}
-	logrus.Debug("session")
+	logrus.Warn("session")
 	if s.CopyIdOpt {
 		scpClient, err := scp.NewClientFromExistingSSH(client, &scp.ClientOption{})
 		if err != nil {
@@ -164,7 +164,7 @@ func (s *SSH) OpenTerminal(conn net.Conn) error {
 
 	}
 	if s.X11 {
-		logrus.Debug("x11 enable")
+		logrus.Warn("x11 enable")
 		x11Request(session, client)
 	}
 	fd := int(os.Stdin.Fd())
@@ -188,24 +188,24 @@ func (s *SSH) OpenTerminal(conn net.Conn) error {
 	if err := session.RequestPty(term, h, w, modes); err != nil {
 		return err
 	}
-	logrus.Debug("pty ok")
+	logrus.Warn("pty ok")
 	session.Stdout = os.Stdout
 	session.Stderr = os.Stderr
 	session.Stdin = os.Stdin
 	if err := session.Shell(); err != nil {
 		return err
 	}
-	logrus.Debug("shell ok")
+	logrus.Warn("shell ok")
 	defer session.Close()
 	defer client.Close()
 	defer terminal.Restore(fd, state)
-	logrus.Debug("wait session")
+	logrus.Warn("wait session")
 	return session.Wait()
 
 }
 
 func (dal *SSH) passwordCallback() (string, error) {
-	logrus.Debug("password callback")
+	logrus.Warn("password callback")
 	fmt.Print("Password: ")
 	b, _ := terminal.ReadPassword(int(syscall.Stdin))
 	fmt.Print("\n")
@@ -290,7 +290,7 @@ type x11request struct {
 }
 
 func x11Request(session *ssh.Session, client *ssh.Client) {
-	logrus.Debug("x11Request")
+	logrus.Warn("x11Request")
 	// x11-req Payload
 	payload := x11request{
 		SingleConnection: false,
@@ -321,7 +321,7 @@ func x11Request(session *ssh.Session, client *ssh.Client) {
 }
 
 func forwardX11Socket(channel ssh.Channel) {
-	logrus.Debug("create X11 socket")
+	logrus.Warn("create X11 socket")
 	conn, err := net.Dial("unix", os.Getenv("DISPLAY"))
 	if err != nil {
 		return

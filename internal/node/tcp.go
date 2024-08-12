@@ -27,13 +27,13 @@ func (node *Node) ServeTCP() {
 		tmp := impl.Sender{}
 		err = gob.NewDecoder(sock).Decode(&tmp)
 		if err != nil {
-			logrus.Debug("read not ok", err)
+			logrus.Warn("read not ok", err)
 			sock.Close()
 			continue
 		}
 		switch tmp.GetOptionCode() {
 		case types.OPTION_TYPE_UP:
-			logrus.Debug("up option")
+			logrus.Warn("up option")
 			impl := tmp.GetImpl()
 			if impl == nil {
 				logrus.Error("unkwon implementation")
@@ -47,21 +47,21 @@ func (node *Node) ServeTCP() {
 			}
 
 		case types.OPTION_TYPE_DOWN:
-			logrus.Debug("down option ", string(tmp.PairId))
+			logrus.Warn("down option ", string(tmp.PairId))
 			err := node.connMgr.DestroyConnection(&tmp, sock)
 			if err != nil {
 				logrus.Error(err)
 			}
 
 		case types.OPTION_TYPE_STAT:
-			logrus.Debug("stat option")
+			logrus.Warn("stat option")
 			err := node.connMgr.Status(tmp, sock)
 			if err != nil {
 				sock.Close()
 				logrus.Error(err)
 			}
 		case types.OPTION_TYPE_ATTACH:
-			logrus.Debug("attach option")
+			logrus.Warn("attach option")
 			err := node.connMgr.AttachConnection(&tmp, sock)
 			if err != nil {
 				logrus.Error(err)

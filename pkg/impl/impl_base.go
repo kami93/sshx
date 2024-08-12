@@ -70,7 +70,7 @@ func (base *BaseImpl) SetParentId(id string) {
 func (base *BaseImpl) SetConn(conn net.Conn) {
 	base.lock.Lock()
 	defer base.lock.Unlock()
-	logrus.Debug("set connection (non-detach)")
+	logrus.Warn("set connection (non-detach)")
 	base.conn = &conn
 }
 
@@ -98,10 +98,10 @@ func (base *BaseImpl) HostId() string {
 
 func (base *BaseImpl) Close() {
 	if base.conn != nil {
-		logrus.Debug("close Conn")
+		logrus.Warn("close Conn")
 		(*base.conn).Close()
 	}
-	logrus.Debug("close base impl")
+	logrus.Warn("close base impl")
 }
 
 // Response of remote device call

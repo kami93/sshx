@@ -30,7 +30,7 @@ func cmdStatus(cmd *cli.Cmd) {
 			return
 		}
 		imp.SetConn(conn)
-		logrus.Debug("impl responsed")
+		logrus.Warn("impl responsed")
 		displayStyle := impl.DISPLAY_TABLE
 		if *treeOpt {
 			displayStyle = impl.DISPLAY_TREE

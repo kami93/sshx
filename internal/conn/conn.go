@@ -66,7 +66,7 @@ func (bc *BaseConnection) Direction() int32 {
 }
 
 func (bc *BaseConnection) Close() {
-	logrus.Debug("close pair")
+	logrus.Warn("close pair")
 	if bc.impl != nil {
 		bc.impl.Close()
 	}
@@ -80,7 +80,7 @@ func (bc *BaseConnection) GetImpl() impl.Impl {
 }
 
 func (bc *BaseConnection) ResetPoolId(id types.PoolId) {
-	logrus.Debug("reset pool id from ", bc.poolId, " to ", id)
+	logrus.Warn("reset pool id from ", bc.poolId, " to ", id)
 	bc.poolId = id
 }
 
@@ -92,6 +92,6 @@ func (bc *BaseConnection) Dial() error {
 	return bc.impl.Dial()
 }
 func (bc *BaseConnection) Response() error {
-	logrus.Debug("base connection response")
+	logrus.Warn("base connection response")
 	return bc.impl.Response()
 }

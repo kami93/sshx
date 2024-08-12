@@ -63,13 +63,13 @@ func (s *SCP) Dial() error {
 		return err
 	}
 
-	logrus.Debug("create scp conn from dal.conn")
+	logrus.Warn("create scp conn from dal.conn")
 	ssht.config.Auth = append(ssht.config.Auth, ssh.RetryableAuthMethod(ssh.PasswordCallback(ssht.passwordCallback), NumberOfPrompts))
 	c, chans, reqs, err := ssh.NewClientConn(conn, "", &ssht.config)
 	if err != nil {
 		return err
 	}
-	logrus.Debug("conn ok")
+	logrus.Warn("conn ok")
 	client := ssh.NewClient(c, chans, reqs)
 	if client == nil {
 		return fmt.Errorf("cannot create ssh client")

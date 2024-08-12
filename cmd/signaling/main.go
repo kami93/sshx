@@ -16,7 +16,7 @@ func main() {
 	server := NewServer(port)
 
 	if utils.DebugOn() {
-		logrus.SetLevel(logrus.DebugLevel)
+		logrus.SetLevel(logrus.WarnLevel)
 	} else {
 		logrus.SetLevel(logrus.InfoLevel)
 	}

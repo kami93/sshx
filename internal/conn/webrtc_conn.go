@@ -55,7 +55,7 @@ func (pair *WebRTC) Name() string {
 
 // create responser
 func (pair *WebRTC) Response() error {
-	logrus.Debug("pair response")
+	logrus.Warn("pair response")
 	peer, err := webrtc.NewPeerConnection(pair.conf)
 	if err != nil {
 		pair.Exit <- err
@@ -98,7 +98,7 @@ func (pair *WebRTC) Response() error {
 			}
 		})
 		dc.OnClose(func() {
-			logrus.Debug("data channel close 2")
+			logrus.Warn("data channel close 2")
 			pair.Exit <- nil
 			pair.Close()
 		})
@@ -110,7 +110,7 @@ func (pair *WebRTC) Response() error {
 
 // create dialer
 func (pair *WebRTC) Dial() error {
-	logrus.Debug("pair dial")
+	logrus.Warn("pair dial")
 	peer, err := webrtc.NewPeerConnection(pair.conf)
 	if err != nil {
 		logrus.Error(err)
@@ -166,7 +166,7 @@ func (pair *WebRTC) Dial() error {
 		logrus.Info("data channel close 1")
 		pair.Exit <- fmt.Errorf("data channel close")
 		pair.Close()
-		logrus.Debug("data channel closed")
+		logrus.Warn("data channel closed")
 	})
 	pair.PeerConnection = peer
 	return nil
@@ -181,7 +181,7 @@ func (pair *WebRTC) Close() {
 
 func (pair *WebRTC) Offer(target string, reType int32) (types.SignalingInfo, error) {
 	var info types.SignalingInfo
-	logrus.Debug("pair offer")
+	logrus.Warn("pair offer")
 	if target == "" {
 		return info, fmt.Errorf("target was empty")
 	}
@@ -206,7 +206,7 @@ func (pair *WebRTC) Offer(target string, reType int32) (types.SignalingInfo, err
 }
 
 func (pair *WebRTC) Anwser(info types.SignalingInfo) (types.SignalingInfo, error) {
-	logrus.Debug("pair anwser")
+	logrus.Warn("pair anwser")
 	if err := pair.PeerConnection.SetRemoteDescription(webrtc.SessionDescription{
 		Type: webrtc.SDPTypeOffer,
 		SDP:  info.SDP,
@@ -237,7 +237,7 @@ func (pair *WebRTC) Anwser(info types.SignalingInfo) (types.SignalingInfo, error
 }
 
 func (pair *WebRTC) MakeConnection(info types.SignalingInfo) error {
-	logrus.Debug("pair make connection")
+	logrus.Warn("pair make connection")
 	if pair == nil || pair.PeerConnection == nil {
 		return fmt.Errorf("invalid peer connection")
 	}

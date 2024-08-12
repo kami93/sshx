@@ -45,7 +45,7 @@ func (stat *STAT) Response() error {
 }
 
 func (stat *STAT) ShowStatus(displayType int) {
-	logrus.Debug("read from conn")
+	logrus.Warn("read from conn")
 	var pld []types.Status
 	err := gob.NewEncoder(stat.Conn()).Encode(&pld)
 	if err != nil {

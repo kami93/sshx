@@ -61,14 +61,14 @@ func (p *Proxy) Start(conn net.Conn) error {
 		defer conn.Close()
 		utils.Pipe(&inconn, &conn)
 	}
-	logrus.Debug("Close proxy for ", p.ProxyHostId)
+	logrus.Warn("Close proxy for ", p.ProxyHostId)
 
 	return nil
 }
 
 func (p *Proxy) Close() {
 	p.Running = false
-	logrus.Debug("close proxy impl")
+	logrus.Warn("close proxy impl")
 }
 
 func (p *Proxy) Response() error {

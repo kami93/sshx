@@ -58,21 +58,21 @@ func (m *Messager) serveRecv() {
 	}
 	for {
 		var msg Message
-		logrus.Debug("waiting message")
+		logrus.Warn("waiting message")
 		err := gob.NewDecoder(m.attachConn).Decode(&msg)
-		logrus.Debug("waiting message ok")
+		logrus.Warn("waiting message ok")
 		if err != nil {
 			logrus.Error(err)
 			m.Close()
 			return
 		}
-		logrus.Debug("message come ", string(msg.Payload))
+		logrus.Warn("message come ", string(msg.Payload))
 		if !m.UIOpened {
 			notify.Notify("sshx", "message", string(msg.Payload), "")
 		}
 		select {
 		case m.recvChan <- msg:
-			logrus.Debug("push message to recv chan")
+			logrus.Warn("push message to recv chan")
 		default:
 			<-m.recvChan
 			logrus.Warn("drop a message")
@@ -168,7 +168,7 @@ func (m *Messager) OpenChatConsole(conn io.ReadWriteCloser) {
 		for m.isRuning {
 			line, err := term.ReadLine()
 			if err != nil {
-				logrus.Debug(err)
+				logrus.Warn(err)
 				conn.Close()
 				return
 			}
@@ -177,11 +177,11 @@ func (m *Messager) OpenChatConsole(conn io.ReadWriteCloser) {
 			}
 			err = gob.NewEncoder(conn).Encode(outMsg)
 			if err != nil {
-				logrus.Debug(err)
+				logrus.Warn(err)
 				conn.Close()
 				return
 			}
-			logrus.Debug("send to remote")
+			logrus.Warn("send to remote")
 		}
 
 	}()
@@ -191,12 +191,12 @@ func (m *Messager) OpenChatConsole(conn io.ReadWriteCloser) {
 		var inMsg Message
 		err := gob.NewDecoder(conn).Decode(&inMsg)
 		if err != nil {
-			logrus.Debug(err)
+			logrus.Warn(err)
 			conn.Close()
 			return
 		}
 		if err != nil {
-			logrus.Debug(err)
+			logrus.Warn(err)
 			conn.Close()
 			return
 		}

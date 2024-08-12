@@ -12,7 +12,7 @@ var defaultHomePath = "/etc/sshx"
 
 func main() {
 	if utils.DebugOn() {
-		logrus.SetLevel(logrus.DebugLevel)
+		logrus.SetLevel(logrus.WarnLevel)
 	} else {
 		logrus.SetLevel(logrus.InfoLevel)
 	}

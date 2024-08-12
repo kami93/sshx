@@ -41,7 +41,7 @@ func (dc *DirectConnection) Name() string {
 
 func (dc *DirectConnection) Dial() error {
 	if dc.impl.IsNeedConnect() {
-		logrus.Debug("dial ", dc.TargetId(), " directly")
+		logrus.Warn("dial ", dc.TargetId(), " directly")
 		conn, err := net.Dial("tcp", fmt.Sprintf("%s:%d", dc.TargetId(), directPort))
 		if err != nil {
 			return err
@@ -51,7 +51,7 @@ func (dc *DirectConnection) Dial() error {
 			HostId:   dc.nodeId,
 			Id:       dc.poolId.Raw(),
 		}
-		logrus.Debug("send direct info")
+		logrus.Warn("send direct info")
 		gob.NewEncoder(conn).Encode(info)
 		implConn := dc.impl.Conn()
 		dc.Conn = conn
