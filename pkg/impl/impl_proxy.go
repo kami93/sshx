@@ -75,7 +75,7 @@ func (p *Proxy) Response() error {
 	p.lock.Lock()
 	defer p.lock.Unlock()
 	
-	logrus.Debug("Dial the port for proxy ", p.ProxyHostPort)
+	logrus.Warn("Dial the port for proxy ", p.ProxyHostPort)
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", p.ProxyHostPort))
 	if err != nil {
 		return err
