@@ -106,6 +106,7 @@ func (base *BaseImpl) Close() {
 
 // Response of remote device call
 func (base *BaseImpl) Response() error {
+	logrus.Warn("base impl response")
 	return nil
 }
 

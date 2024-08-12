@@ -94,6 +94,6 @@ func (bc *BaseConnection) Dial() error {
 	return bc.impl.Dial()
 }
 func (bc *BaseConnection) Response() error {
-	logrus.Warn("base connection response")
+	// logrus.Warn("base connection response")
 	return bc.impl.Response()
 }
