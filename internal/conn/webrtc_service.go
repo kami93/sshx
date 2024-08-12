@@ -54,6 +54,11 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 		iface.SetConn(sock)
 	}
 
+	if iface.Code() == types.APP_TYPE_PROXY {
+		logrus.Warn(fmt.Sprintf("sender hostport%d", sender.ProxyHostPort))
+		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
+	}
+
 	pair := NewWebRTC(wss.conf, iface, wss.id, iface.HostId(), poolId, CONNECTION_DRECT_OUT, &wss.CleanChan)
 	if pair == nil {
 		return fmt.Errorf("cannot create pair")
