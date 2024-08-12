@@ -251,6 +251,8 @@ func (wss *WebRTCService) ServeSignaling() {
 				}
 			}
 			res.Body.Close()
+			logrus.Warn(fmt.Sprintf("webrtc pull loop info hostport: %d", info.ProxyHostPort))
+
 			wss.sigPull <- info
 		}
 	}()
