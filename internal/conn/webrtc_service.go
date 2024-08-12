@@ -287,6 +287,7 @@ func (wss *WebRTCService) SignalCandidate(info types.SignalingInfo, target strin
 		Id:                info.Id,
 		RemoteRequestType: info.RemoteRequestType,
 		Target:            target,
+		ProxyHostPort:	   info.ProxyHostPort,
 	}
 	wss.push(cadInfo)
 }
