@@ -30,6 +30,14 @@ func NewSSHFS(mountPoint, root, address, id string) *SSHFS {
 	}
 }
 
+func (s *SSHFS) Hostport() int32 {
+	return 0
+}
+
+func (fs *SSHFS) SetHostport(port int32) error {
+	return nil
+}
+
 func (fs *SSHFS) Preper() error {
 	// use ssh impl to get host id
 	ssht := NewSSH(fs.Address, false, fs.Identify, false)

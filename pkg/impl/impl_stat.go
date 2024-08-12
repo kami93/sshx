@@ -24,6 +24,14 @@ func NewSTAT() *STAT {
 	return &STAT{}
 }
 
+func (stat *STAT) Hostport() int32 {
+	return 0
+}
+
+func (stat *STAT) SetHostport(port int32) error {
+	return nil
+}
+
 func (stat *STAT) Code() int32 {
 	return types.APP_TYPE_STAT
 }

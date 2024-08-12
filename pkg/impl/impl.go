@@ -40,6 +40,8 @@ type Impl interface {
 	Attach(net.Conn) error
 	NoNeedConnect()
 	IsNeedConnect() bool
+	Hostport() int32
+	SetHostport(int32) error
 }
 
 var registeddApp = []Impl{

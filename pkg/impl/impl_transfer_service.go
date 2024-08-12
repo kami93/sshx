@@ -244,6 +244,14 @@ func (trs *TransferService) Start() error {
 	return nil
 }
 
+func (trs *TransferService) Hostport() int32 {
+	return 0
+}
+
+func (trs *TransferService) SetHostport(port int32) error {
+	return nil
+}
+
 func (trs *TransferService) Code() int32 {
 	return types.APP_TYPE_TRANSFER_SERVICE
 }

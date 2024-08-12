@@ -48,6 +48,14 @@ func NewSSH(address string, x11 bool, ident string, copyId bool) *SSH {
 	return ret
 }
 
+func (s *SSH) Hostport() int32 {
+	return 0
+}
+
+func (s *SSH) SetHostport(port int32) error {
+	return nil
+}
+
 func (s *SSH) Code() int32 {
 	return types.APP_TYPE_SSH
 }

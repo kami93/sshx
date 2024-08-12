@@ -117,3 +117,12 @@ func (base *BaseImpl) Dial() error {
 func (base *BaseImpl) Attach(net.Conn) error {
 	return nil
 }
+
+
+func (base *BaseImpl) Hostport() error {
+	return nil
+}
+
+func (base *BaseImpl) SetHostport(port int32) error {
+	return nil
+}

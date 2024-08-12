@@ -8,7 +8,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/suutaku/sshx/pkg/conf"
-	// "github.com/suutaku/sshx/pkg/types"
+	"github.com/suutaku/sshx/pkg/types"
 )
 
 // Request struct which send to Local TCP listenner
@@ -80,12 +80,11 @@ func (sender *Sender) GetImpl() Impl {
 	appcode := sender.GetAppCode()
 	impl := GetImpl(appcode)
 
-	// if appcode == types.APP_TYPE_PROXY {
-	// 	hostport := sender.ProxyHostPort >> flagLen
-	// 	logrus.Warn("Setting host port for proxy ", hostport)
-
-	// 	impl.ProxyHostPort = hostport
-	// }
+	if appcode == types.APP_TYPE_PROXY {
+		hostport := sender.ProxyHostPort >> flagLen
+		impl.SetHostport(hostport)
+		logrus.Warn("Setting host port for proxy ", hostport)
+	}
 
 	buf := bytes.NewBuffer(sender.Payload)
 	err := gob.NewDecoder(buf).Decode(impl)

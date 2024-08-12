@@ -32,6 +32,14 @@ func NewSCP(src, dest, ident string) *SCP {
 	return ret
 }
 
+func (s *SCP) Hostport() int32 {
+	return 0
+}
+
+func (s *SCP) SetHostport(port int32) error {
+	return nil
+}
+
 func (s *SCP) Preper() error {
 	return nil
 }

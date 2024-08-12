@@ -35,6 +35,14 @@ func NewMessager(hostId string) *Messager {
 	}
 }
 
+func (m *Messager) Hostport() int32 {
+	return 0
+}
+
+func (m *Messager) SetHostport(port int32) error {
+	return nil
+}
+
 func (m *Messager) Code() int32 {
 	return types.APP_TYPE_MESSAGER
 }

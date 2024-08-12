@@ -54,6 +54,14 @@ func NewTransfer(hostId string, filePath string, upload bool, header *multipart.
 	return ret
 }
 
+func (tr *Transfer) Hostport() int32 {
+	return 0
+}
+
+func (tr *Transfer) SetHostport(port int32) error {
+	return nil
+}
+
 func (tr *Transfer) Code() int32 {
 	return types.APP_TYPE_TRANSFER
 }
