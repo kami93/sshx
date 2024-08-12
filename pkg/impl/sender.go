@@ -18,7 +18,7 @@ type Sender struct {
 	LocalEntry string
 	Payload    []byte // Application specify payload
 	Status     int32
-	ProxyHostPort int32 // Host port for proxy app.       
+	ProxyHostPort int32 // Host port for proxy app.
 }
 
 func NewProxySender(imp *Proxy, optCode int32) *Sender {

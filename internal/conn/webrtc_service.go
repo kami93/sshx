@@ -71,6 +71,11 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 	if iface.IsNeedConnect() {
 		logrus.Warn("create connection for ", impl.GetImplName(iface.Code()))
 		info, err := pair.Offer(string(iface.HostId()), sender.Type)
+		info.ProxyHostPort = sender.ProxyHostPort
+
+		logrus.Warn(fmt.Sprintf("webrtc info hostport: %d", info.ProxyHostPort))
+
+
 		if err != nil {
 			return err
 		}
@@ -143,6 +148,7 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	}
 	cvt := impl.Sender{
 		Type: info.RemoteRequestType,
+		ProxyHostPort: info.ProxyHostPort,
 	}
 	iface := impl.GetImpl(cvt.GetAppCode())
 	if iface == nil {
@@ -152,6 +158,8 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	iface.SetHostId(info.Source)
 
 	if iface.Code() == types.APP_TYPE_PROXY {
+		iface.SetHostport(info.ProxyHostPort)
+		
 		logrus.Warn(fmt.Sprintf("sender hostport: %d", cvt.ProxyHostPort))
 		logrus.Warn(fmt.Sprintf("impl hostport: %d", iface.Hostport()))
 	}
