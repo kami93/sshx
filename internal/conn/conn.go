@@ -1,6 +1,7 @@
 package conn
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -41,7 +42,7 @@ func NewBaseConnection(impl impl.Impl, nodeId, targetId string, poolId types.Poo
 	impl.Init()
 	logrus.Warn("New BaseConnection")
 	logrus.Warn(fmt.Sprintf("%d", impl.Hostport()))
-	
+
 	ret := &BaseConnection{
 		Exit:     make(chan error, 10),
 		nodeId:   nodeId,
