@@ -35,6 +35,7 @@ func (p *Proxy) Code() int32 {
 }
 
 func (p *Proxy) Hostport() int32 {
+	logrus.Warn("proxy impl hostport called")
 	return p.ProxyHostPort
 }
 
