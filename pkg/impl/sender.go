@@ -8,7 +8,6 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/suutaku/sshx/pkg/conf"
-	"github.com/suutaku/sshx/pkg/types"
 )
 
 // Request struct which send to Local TCP listenner
