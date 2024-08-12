@@ -40,7 +40,8 @@ type BaseConnection struct {
 func NewBaseConnection(impl impl.Impl, nodeId, targetId string, poolId types.PoolId, direct, implc int32) *BaseConnection {
 	impl.Init()
 	logrus.Warn("New BaseConnection")
-	logrus.Warn(string((impl.Hostport())))
+	logrus.Warn(fmt.Sprintf("%d", impl.Hostport()))
+	
 	ret := &BaseConnection{
 		Exit:     make(chan error, 10),
 		nodeId:   nodeId,

@@ -20,7 +20,8 @@ type DirectConnection struct {
 
 func NewDirectConnection(impl impl.Impl, nodeId string, targetId string, poolId types.PoolId, direct int32, cleanChan *chan CleanRequest) *DirectConnection {
 	logrus.Warn("New DirectConnection")
-	logrus.Warn(string((impl.Hostport())))
+	logrus.Warn(fmt.Sprintf("%d", impl.Hostport()))
+	
 	ret := &DirectConnection{
 		BaseConnection: *NewBaseConnection(impl, nodeId, targetId, poolId, direct, impl.Code()),
 		CleanChan:      cleanChan,

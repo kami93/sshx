@@ -35,6 +35,7 @@ func NewWebRTC(conf webrtc.Configuration, impl impl.Impl, nodeId string, targetI
 		logrus.Error("rtc error:", err)
 		return nil
 	}
+	logrus.Warn("New WebRTC called")
 	ret := &WebRTC{
 		PeerConnection: pc,
 		conf:           conf,
