@@ -80,12 +80,12 @@ func (sender *Sender) GetImpl() Impl {
 	appcode := sender.GetAppCode()
 	impl := GetImpl(appcode)
 
-	if appcode == types.APP_TYPE_PROXY {
-		// hostport := (sender.ProxyHostPort >> flagLen)
-		var hostport int32 = 22
-		impl.SetHostport(hostport)
-		logrus.Warn("Setting host port for proxy ", hostport)
-	}
+	// if appcode == types.APP_TYPE_PROXY {
+	// 	// hostport := (sender.ProxyHostPort >> flagLen)
+	// 	var hostport int32 = 22
+	// 	impl.SetHostport(hostport)
+	// 	logrus.Warn("Setting host port for proxy ", hostport)
+	// }
 
 	buf := bytes.NewBuffer(sender.Payload)
 	err := gob.NewDecoder(buf).Decode(impl)

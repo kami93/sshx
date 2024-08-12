@@ -103,7 +103,7 @@ func (cm *ConnectionManager) AttachConnection(sender *impl.Sender, sock net.Conn
 			logrus.Error(err)
 			return
 		}
-		logrus.Debug("attached ", sender.GetImpl().HostId())
+		logrus.Warn("attached ", sender.GetImpl().HostId())
 		err = cm.css[0].ResponseTCP(sender, sock)
 		if err != nil {
 			logrus.Error(err)
@@ -244,12 +244,12 @@ func (stm *StatManager) doAddPair(pair Connection) error {
 	}
 
 	if pair.GetImpl().ParentId() != "" {
-		logrus.Debug("add child ", pair.PoolId().String(pair.Direction()), " to ", pair.GetImpl().ParentId())
+		logrus.Warn("add child ", pair.PoolId().String(pair.Direction()), " to ", pair.GetImpl().ParentId())
 		stat.ParentPairId = pair.GetImpl().ParentId()
 		stm.addChild(pair.GetImpl().ParentId(), pair.PoolId().String(pair.Direction()))
 	}
 	stm.putStat(stat)
-	logrus.Debug("put pair on stat ", impl.GetImplName(pair.GetImpl().Code()), " with pair id ", stat.PairId)
+	logrus.Warn("put pair on stat ", impl.GetImplName(pair.GetImpl().Code()), " with pair id ", stat.PairId)
 	return nil
 
 }

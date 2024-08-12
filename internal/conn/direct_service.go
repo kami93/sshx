@@ -36,7 +36,7 @@ func (ds *DirectService) Start() error {
 	}
 
 	go func() {
-		logrus.Debug("runing status ", ds.running)
+		logrus.Warn("runing status ", ds.running)
 		for ds.running {
 			sock, err := listenner.Accept()
 			if err != nil {
@@ -49,7 +49,7 @@ func (ds *DirectService) Start() error {
 				logrus.Error(err)
 				continue
 			}
-			logrus.Debug("new direct info com ", info)
+			logrus.Warn("new direct info com ", info)
 			imp := impl.GetImpl(info.ImplCode)
 			imp.SetHostId(info.HostId)
 			poolId := types.NewPoolId(info.Id, imp.Code())
