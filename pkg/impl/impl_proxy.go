@@ -18,12 +18,20 @@ type Proxy struct {
 	ProxyHostId string
 }
 
+var _RemotePort int32
+
 func NewProxy(port int32, remoteport int32, host string) *Proxy {
 	return &Proxy{
 		ProxyPort:   port,
 		RemotePort: remoteport,
 		ProxyHostId: host,
 	}
+}
+
+func (base *Proxy) Preper() error {
+	_RemotePort = base.RemotePort
+	
+	return nil
 }
 
 func (p *Proxy) Code() int32 {
@@ -37,7 +45,7 @@ func (p *Proxy) Start() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Proxy for ", p.ProxyHostId, " at :", p.ProxyPort)
+	fmt.Println("Proxy for", p.ProxyHostId, ":", p.RemotePort, " at :", p.ProxyPort)
 
 	for p.Running {
 		conn, err := listenner.Accept()
@@ -68,9 +76,9 @@ func (p *Proxy) doDial(inconn net.Conn) {
 			HId:        p.ProxyHostId,
 			ConnectNow: true,
 		},
-		RemotePort: p.RemotePort,
+		RemotePort: _RemotePort,
 	}
-	logrus.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
+	logrus.Debug("Dial to ", p.ProxyHostId, ":", _RemotePort)
 
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)
