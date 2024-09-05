@@ -196,6 +196,8 @@ func (pair *WebRTC) Offer(target string, reType int32) (types.SignalingInfo, err
 		pair.Close()
 		return info, err
 	}
+
+	logrus.Debug("Sending remote port ", pair.BaseConnection.impl.GetRemotePort())
 	ret := types.SignalingInfo{
 		Id:                pair.poolId,
 		Flag:              types.SIG_TYPE_OFFER,
