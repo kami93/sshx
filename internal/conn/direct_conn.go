@@ -73,6 +73,7 @@ func (dc *DirectConnection) Dial() error {
 }
 
 func (dc *DirectConnection) Response() error {
+	logrus.Debug("direct connection response")
 	dc.Ready()
 	err := dc.BaseConnection.Response()
 	if err != nil {

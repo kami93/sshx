@@ -18,8 +18,6 @@ type Proxy struct {
 	ProxyHostId string
 }
 
-var _RemotePort int32
-
 func NewProxy(port int32, remoteport int32, host string) *Proxy {
 	return &Proxy{
 		ProxyPort:   port,
@@ -29,9 +27,7 @@ func NewProxy(port int32, remoteport int32, host string) *Proxy {
 }
 
 func (base *Proxy) Preper() error {
-	logrus.Debug("ProxyPort ", base.ProxyPort, "RemotePort", base.RemotePort)
-	_RemotePort = base.RemotePort
-	
+	logrus.Debug("Preper impl proxy")
 	return nil
 }
 
@@ -63,6 +59,7 @@ func (p *Proxy) Start() error {
 }
 
 func (p *Proxy) Response() error {
+	logrus.Debug("Response impl proxy")
 	return nil
 }
 
@@ -77,9 +74,9 @@ func (p *Proxy) doDial(inconn net.Conn) {
 			HId:        p.ProxyHostId,
 			ConnectNow: true,
 		},
-		RemotePort: _RemotePort,
+		RemotePort: p.RemotePort,
 	}
-	logrus.Debug("Dial to ", p.ProxyHostId, ":", _RemotePort)
+	logrus.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
 
 	imp.Preper()
 	imp.SetParentId(p.PairId())

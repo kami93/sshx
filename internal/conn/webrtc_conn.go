@@ -55,7 +55,8 @@ func (pair *WebRTC) Name() string {
 
 // create responser
 func (pair *WebRTC) Response() error {
-	logrus.Debug("pair response")
+	// logrus.Debug("pair response")
+	logrus.Debug("WebRTC connection response")
 	peer, err := webrtc.NewPeerConnection(pair.conf)
 	if err != nil {
 		pair.Exit <- err
