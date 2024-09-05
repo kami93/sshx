@@ -29,6 +29,7 @@ func NewProxy(port int32, remoteport int32, host string) *Proxy {
 }
 
 func (base *Proxy) Preper() error {
+	logrus.Debug("ProxyPort ", base.ProxyPort, "RemotePort", base.RemotePort)
 	_RemotePort = base.RemotePort
 	
 	return nil
@@ -80,6 +81,7 @@ func (p *Proxy) doDial(inconn net.Conn) {
 	}
 	logrus.Debug("Dial to ", p.ProxyHostId, ":", _RemotePort)
 
+	imp.Preper()
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)
 	conn, err := sender.Send()

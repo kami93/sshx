@@ -20,6 +20,7 @@ func (s *ProxyService) Code() int32 {
 }
 
 func (s *ProxyService) Preper() error {
+	logrus.Debug("RemotePort ", s.RemotePort)
 	__RemotePort = s.RemotePort
 
 	return nil
