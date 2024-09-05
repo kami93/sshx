@@ -1,7 +1,7 @@
 package impl
 
 import (
-	"encoding/gob"
+	// "encoding/gob"
 	"fmt"
 	"net"
 
@@ -31,15 +31,6 @@ func (s *ProxyService) Response() error {
 	defer s.lock.Unlock()
 
 	logrus.Debug("Response impl proxy service")
-	var remoteport int32
-	tmp_conn, _ := net.Pipe()
-
-	_err := gob.NewDecoder(tmp_conn).Decode(&remoteport)
-	logrus.Debug(_err)
-	logrus.Debug("Recv remote port information", remoteport)
-	tmp_conn.Close()
-
-	s.RemotePort = remoteport
 
 	logrus.Debug("Dial local addr ", s.RemotePort)
 	conn, err := net.Dial("tcp", fmt.Sprintf("127.0.0.1:%d", s.RemotePort))

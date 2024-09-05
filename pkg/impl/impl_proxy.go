@@ -78,17 +78,15 @@ func (p *Proxy) doDial(inconn net.Conn) {
 		RemotePort: p.RemotePort,
 	}
 	logrus.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
-
-	imp.Preper()
+	
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)
 	conn, err := sender.Send()
+	logrus.Debug(err)
 
-	tmp_conn, _ := net.Pipe()
 	logrus.Debug("Send remote port information", p.RemotePort)
-	_err := gob.NewEncoder(tmp_conn).Encode(p.RemotePort)
+	_err := gob.NewEncoder(conn).Encode(p.RemotePort)
 	logrus.Debug(_err)
-	tmp_conn.Close()
 
 	if err != nil {
 		logrus.Error(err)
