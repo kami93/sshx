@@ -70,8 +70,8 @@ func (p *Proxy) doDial(inconn net.Conn) {
 		},
 		RemotePort: p.RemotePort,
 	}
-	logurs.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
-	
+	logrus.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
+
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)
 	conn, err := sender.Send()
