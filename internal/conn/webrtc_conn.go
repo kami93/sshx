@@ -67,6 +67,7 @@ func (pair *WebRTC) Response() error {
 	peer.OnDataChannel(func(dc *webrtc.DataChannel) {
 		//dc.Lock()
 		dc.OnOpen(func() {
+			logrus.Debug("WebRTC Base connection response")
 			err := pair.BaseConnection.Response()
 			if err != nil {
 				logrus.Error(err)
