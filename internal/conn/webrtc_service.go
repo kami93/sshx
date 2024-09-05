@@ -183,6 +183,8 @@ func (wss *WebRTCService) ServePush(info types.SignalingInfo) {
 	}
 	resp, err := http.Post(wss.signalingServerAddr+
 		path.Join("/", "push", info.Target), "application/binary", buf)
+	logrus.Debug("pushed ", info)
+
 	if err != nil {
 		logrus.Error(err)
 		return
@@ -239,6 +241,7 @@ func (wss *WebRTCService) ServeSignaling() {
 			}
 			res.Body.Close()
 			wss.sigPull <- info
+			logrus.Debug("pulled ", info)
 		}
 	}()
 
@@ -246,7 +249,7 @@ func (wss *WebRTCService) ServeSignaling() {
 		select {
 		case info := <-wss.sigPush:
 			go wss.ServePush(info)
-			logrus.Debug(info.RemotePort)
+			// logrus.Debug(info.RemotePort)
 
 		case info := <-wss.sigPull:
 			switch info.Flag {
@@ -262,7 +265,7 @@ func (wss *WebRTCService) ServeSignaling() {
 			case types.SIG_TYPE_UNKNOWN:
 				logrus.Error("unknow signaling type")
 			}
-			logrus.Debug(info.RemotePort)
+			// logrus.Debug(info.RemotePort)
 		}
 	}
 }
