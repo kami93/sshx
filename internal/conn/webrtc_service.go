@@ -245,10 +245,10 @@ func (wss *WebRTCService) ServeSignaling() {
 	for wss.running {
 		select {
 		case info := <-wss.sigPush:
-			logrus.Debug(info.RemotePort)
 			go wss.ServePush(info)
-		case info := <-wss.sigPull:
 			logrus.Debug(info.RemotePort)
+
+		case info := <-wss.sigPull:
 			switch info.Flag {
 			case types.SIG_TYPE_OFFER:
 				// server side
@@ -262,6 +262,7 @@ func (wss *WebRTCService) ServeSignaling() {
 			case types.SIG_TYPE_UNKNOWN:
 				logrus.Error("unknow signaling type")
 			}
+			logrus.Debug(info.RemotePort)
 		}
 	}
 }
