@@ -86,7 +86,7 @@ func (wss *WebRTCService) CreateConnection(sender *impl.Sender, sock net.Conn, p
 		logrus.Error("NOT create connection for ", impl.GetImplName(iface.Code()))
 	}
 
-	logrus.Debug("ready to put piar ", pair.poolId.String(pair.Direction()))
+	logrus.Debug("ready to put pair ", pair.poolId.String(pair.Direction()))
 	err = wss.AddPair(pair)
 	if err != nil {
 		return err
@@ -245,8 +245,10 @@ func (wss *WebRTCService) ServeSignaling() {
 	for wss.running {
 		select {
 		case info := <-wss.sigPush:
+			logrus.Debug(info.RemotePort)
 			go wss.ServePush(info)
 		case info := <-wss.sigPull:
+			logrus.Debug(info.RemotePort)
 			switch info.Flag {
 			case types.SIG_TYPE_OFFER:
 				// server side
