@@ -13,13 +13,15 @@ import (
 type Proxy struct {
 	BaseImpl
 	ProxyPort   int32
+	RemotePort int32
 	Running     bool
 	ProxyHostId string
 }
 
-func NewProxy(port int32, host string) *Proxy {
+func NewProxy(port int32, remoteport int32, host string) *Proxy {
 	return &Proxy{
 		ProxyPort:   port,
+		RemotePort: remoteport,
 		ProxyHostId: host,
 	}
 }
@@ -61,11 +63,12 @@ func (p *Proxy) Close() {
 }
 
 func (p *Proxy) doDial(inconn net.Conn) {
-	imp := &SSH{
+	imp := &ProxyService{
 		BaseImpl: BaseImpl{
 			HId:        p.ProxyHostId,
 			ConnectNow: true,
 		},
+		RemotePort: p.RemotePort,
 	}
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)

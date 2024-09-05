@@ -45,6 +45,7 @@ type Impl interface {
 var registeddApp = []Impl{
 	&SSH{},
 	&Proxy{},
+    &ProxyService{},
 	&SSHFS{},
 	&SCP{},
 	&STAT{},

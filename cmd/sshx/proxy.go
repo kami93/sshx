@@ -13,7 +13,7 @@ func cmdStopProxy(cmd *cli.Cmd) {
 	cmd.Spec = "PID"
 	pairId := cmd.StringArg("PID", "", "Connection pair id which can found by using status command")
 	cmd.Action = func() {
-		imp := impl.NewProxy(0, "")
+		imp := impl.NewProxy(0, 0, "")
 		imp.NoNeedConnect()
 		sender := impl.NewSender(imp, types.OPTION_TYPE_DOWN)
 		sender.PairId = []byte(*pairId)
@@ -23,8 +23,9 @@ func cmdStopProxy(cmd *cli.Cmd) {
 
 func cmdStartProxy(cmd *cli.Cmd) {
 	// cmd.Spec = "-P [-d] ADDR"
-	cmd.Spec = "-P ADDR"
+	cmd.Spec = "-P -R ADDR"
 	proxyPort := cmd.IntOpt("P", 0, "local proxy port")
+	remotePort := cmd.IntOpt("R", 0, "remote proxy port")
 	// detach := cmd.BoolOpt("d", false, "detach process")
 	addr := cmd.StringArg("ADDR", "", "remote target address [username]@[host]:[port]")
 	cmd.Action = func() {
@@ -35,7 +36,7 @@ func cmdStartProxy(cmd *cli.Cmd) {
 			fmt.Println("please set a remote device")
 		}
 
-		proxy := impl.NewProxy(int32(*proxyPort), *addr)
+		proxy := impl.NewProxy(int32(*proxyPort), int32(*remotePort), *addr)
 		proxy.Preper()
 		proxy.NoNeedConnect()
 
