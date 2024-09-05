@@ -203,6 +203,7 @@ func (pair *WebRTC) Offer(target string, reType int32) (types.SignalingInfo, err
 		SDP:               offer.SDP,
 		RemoteRequestType: reType,
 		Source:            pair.nodeId,
+		RemotePort:		   pair.BaseConnection.impl.GetRemotePort(),
 	}
 	return ret, nil
 }

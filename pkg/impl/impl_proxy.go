@@ -1,7 +1,6 @@
 package impl
 
 import (
-	"encoding/gob"
 	"fmt"
 	"net"
 
@@ -69,6 +68,16 @@ func (p *Proxy) Close() {
 	logrus.Debug("close proxy impl")
 }
 
+func (p *Proxy) GetRemotePort() int32 {
+	return p.RemotePort
+}
+
+func (p *Proxy) SetRemotePort(port int32) error {
+	p.RemotePort = port
+
+	return nil
+}
+
 func (p *Proxy) doDial(inconn net.Conn) {
 	imp := &ProxyService{
 		BaseImpl: BaseImpl{
@@ -78,15 +87,11 @@ func (p *Proxy) doDial(inconn net.Conn) {
 		RemotePort: p.RemotePort,
 	}
 	logrus.Debug("Dial to ", p.ProxyHostId, ":", p.RemotePort)
-	
+
 	imp.SetParentId(p.PairId())
 	sender := NewSender(imp, types.OPTION_TYPE_UP)
 	conn, err := sender.Send()
 	logrus.Debug(err)
-
-	logrus.Debug("Send remote port information", p.RemotePort)
-	_err := gob.NewEncoder(conn).Encode(p.RemotePort)
-	logrus.Debug(_err)
 
 	if err != nil {
 		logrus.Error(err)

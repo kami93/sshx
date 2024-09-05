@@ -9,4 +9,5 @@ type SignalingInfo struct {
 	Target            string `json:"target"`
 	PeerType          int32  `json:"peer_type"`
 	RemoteRequestType int32  `json:"remote_request_type"`
+	RemotePort		  int32  `json:"remote_port"`
 }

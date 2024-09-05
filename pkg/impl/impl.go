@@ -40,6 +40,8 @@ type Impl interface {
 	Attach(net.Conn) error
 	NoNeedConnect()
 	IsNeedConnect() bool
+	SetRemotePort(int32) error
+	GetRemotePort() int32
 }
 
 var registeddApp = []Impl{
@@ -52,6 +54,14 @@ var registeddApp = []Impl{
 	&Messager{},
 	&Transfer{},
 	&TransferService{},
+}
+
+func GetRemotePort() int32 {
+	return 0
+}
+
+func SetRemotePort(port int32) error {
+	return nil
 }
 
 func GetImpl(code int32) Impl {

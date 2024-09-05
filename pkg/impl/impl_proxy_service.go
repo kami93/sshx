@@ -1,7 +1,6 @@
 package impl
 
 import (
-	// "encoding/gob"
 	"fmt"
 	"net"
 
@@ -23,6 +22,16 @@ func (s *ProxyService) Preper() error {
 }
 
 func (s *ProxyService) Dial() error {
+	return nil
+}
+
+func (s *ProxyService) GetRemotePort() int32 {
+	return s.RemotePort
+}
+
+func (s *ProxyService) SetRemotePort(port int32) error {
+	s.RemotePort = port
+	
 	return nil
 }
 

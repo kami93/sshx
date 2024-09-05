@@ -117,3 +117,11 @@ func (base *BaseImpl) Dial() error {
 func (base *BaseImpl) Attach(net.Conn) error {
 	return nil
 }
+
+func (base *BaseImpl) GetRemotePort() int32 {
+	return 0
+}
+
+func (base *BaseImpl) SetRemotePort(port int32) error {
+	return nil
+}

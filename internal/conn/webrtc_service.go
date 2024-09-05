@@ -148,7 +148,8 @@ func (wss *WebRTCService) ServeOfferInfo(info types.SignalingInfo) {
 	// set candidate pool id direction to out for self(server)
 	pair := NewWebRTC(wss.conf, iface, wss.id, info.Source, info.Id, CONNECTION_DRECT_IN, &wss.CleanChan)
 	// set candidate pool id direction to out for client
-	logrus.Debug("WebRTC response")
+	logrus.Debug("WebRTC response. Set RemotePort: ", info.RemotePort)
+	pair.BaseConnection.impl.SetRemotePort(info.RemotePort)
 	err := pair.Response()
 	if err != nil {
 		logrus.Error(err)
